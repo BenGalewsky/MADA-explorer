@@ -24,7 +24,7 @@ fluidPage(
           <br>
           <p> This is a prototype, version 0.0.0.9000. </p>
           <p> Author: Nguyen Tan Thai Hung </p>
-          <a href="https://github.com/ntthung">GitHub</a>
+          <a href="https://github.com/ntthung/MADA-explorer">GitHub</a>
         </div>'
       )
     )
