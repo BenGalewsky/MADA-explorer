@@ -5,12 +5,12 @@ function(input, output, session) {
   output$yearSelector <- renderUI({
     if (input$timeMode == 'One year') {
       list(
-        sliderInput('yr', 'Year:', min = 0, max = 2012, value = 2012 ),
+        sliderInput('yr', 'Year:', min = 1200, max = 2012, value = 2012 ),
         textInput('yrTxt', 'Year:', 2012)
       )
     } else {
       list(
-        sliderInput('yr', 'Year:', min = 0, max = 2012, value = c(1913, 2012)),
+        sliderInput('yr', 'Year:', min = 1200, max = 2012, value = c(1913, 2012)),
         textInput('yrStt', 'Start year:', 1913),
         textInput('yrEnd', 'End year:', 2012)
       )
@@ -53,33 +53,32 @@ function(input, output, session) {
     yr <- input$yr
     if (length(yr) > 0) {
       if (length(yr) == 1) {
-        DT <- mada[year == yr]
-        limits <- c(-13.25, 13.25)
-        breaks <- -13:13
+        DT1 <- madaVN[year == yr]
+        DT2 <- recVN[year == yr]
+        limits1 <- c(-8, 8)
+        limits2 <- c(-3, 3)
       } else {
-        DT <- mada[year %between% yr,
+        DT1 <- madaVN[year %between% yr,
                    .(pdsi = mean(pdsi, na.rm = TRUE)),
                    by = .(long, lat)]
-        limits <- abs_range(DT$pdsi)
-        breaks <- seq(limits[1], limits[2], length.out = 18)
+        DT2 <- recVN[year %between% yr,
+                    .(z = mean(z, na.rm = TRUE)),
+                    by = .(id, long, lat)]
+        limits1 <- abs_range(DT1$pdsi)
+        limits2 <- abs_range(DT2$z)
       }
-      ggplot(DT) +
-        geom_tile(aes(long, lat, fill = pdsi)) +
-        geom_sf(data = countries, fill = NA, size = 0.25) +
-        scale_fill_stepsn(
-          name = 'PDSI',
-          colours = c(rev(brewer.pal(9, 'Reds')), brewer.pal(9, 'Blues')),
-          breaks = breaks,
-          labels = function(x) round(x, 3),
-          limits = limits
-        ) +
-        labs(x = NULL, y = NULL) +
-        coord_sf(xlim = xRange, ylim = yRange, expand = FALSE) +
-        theme_bw() +
-        theme(
-          text = element_text(size = 20),
-          legend.key.height = unit(8, 'lines')
-        )
+      p1 <- ggplot() +
+        geom_tile(aes(long, lat, fill = pdsi), DT1, width = 1, height = 1) +
+        geom_sf(data = vn, fill = NA, color = 'gray') +
+        scale_fill_distiller(palette = 'RdBu', limits = limits1, name = 'PDSI', direction = 1)
+
+      p2 <- ggplot() +
+        geom_sf(data = vn, fill = NA, color = 'gray') +
+        geom_line(aes(long, lat, color = z, group = id), DT2) +
+        scale_color_distiller(palette = 'RdBu', limits = limits2, name = 'Streamflow\nindex', direction = 1)
+
+      pl <- p1 + p2 & theme_map()
+      pl
     }
   })
 }

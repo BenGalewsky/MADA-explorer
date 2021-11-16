@@ -3,7 +3,7 @@ source('init.R')
 fluidPage(
 
   # Application title
-  titlePanel("MADA Explorer"),
+  titlePanel("MADA and Streamflow in Vietnam"),
 
   # Sidebar with a slider input for year
   sidebarLayout(
@@ -24,9 +24,10 @@ fluidPage(
           <br>
           <p> This is a prototype, version 0.0.0.9000. </p>
           <p> Author: Nguyen Tan Thai Hung </p>
-          <a href="https://github.com/ntthung/MADA-explorer">GitHub</a>
         </div>'
       )
     )
   )
 )
+
+          # <a href="https://github.com/ntthung/MADA-explorer">GitHub</a>

@@ -1,0 +1,13 @@
+name: VN-MADA-Streamflow
+title: VN-MADA-Streamflow
+username:
+account: ntthung
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 4508620
+bundleId: 4939030
+url: https://ntthung.shinyapps.io/VN-MADA-Streamflow/
+when: 1629326228.53722
+lastSyncTime: 1629326228.53722
+asMultiple: FALSE
+asStatic: FALSE
